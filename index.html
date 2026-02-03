@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>💘 Love</title>
+  <style>
+    :root {
+      --bg1: #ffdde1;
+      --bg2: #ee9ca7;
+      --card: rgba(255,255,255,.75);
+      --shadow: 0 20px 60px rgba(0,0,0,.12);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      padding: 18px;
+    }
+
+    .card {
+      width: min(520px, 100%);
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 22px 18px 18px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,.7);
+    }
+
+    .img-wrap {
+      width: 100%;
+      display: grid;
+      place-items: center;
+      margin-bottom: 10px;
+    }
+
+    img {
+      width: 220px;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 18px;
+      box-shadow: 0 12px 30px rgba(0,0,0,.12);
+      user-select: none;
+      pointer-events: none;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin: 12px 0 14px;
+      line-height: 1.25;
+      color: #3b1d2a;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 14px 18px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+      box-shadow: 0 12px 26px rgba(0,0,0,.12);
+      user-select: none;
+    }
+
+    button:active { transform: scale(0.98); }
+
+    #yesBtn {
+      background: linear-gradient(180deg, #ff4d6d, #d81b60);
+      color: white;
+    }
+
+    #noBtn {
+      background: rgba(255,255,255,.9);
+      color: #3b1d2a;
+      border: 1px solid rgba(0,0,0,.08);
+    }
+
+    .hint {
+      margin-top: 12px;
+      font-size: 13px;
+      opacity: .75;
+      color: #3b1d2a;
+    }
+
+    /* sucess screen*/
+    .hidden { display: none; }
+
+    .yay h1 { font-size: 26px; }
+    .yay p {
+      margin: 6px 0 0;
+      font-size: 16px;
+      color: #3b1d2a;
+      opacity: .9;
+    }
+  </style>
+</head>
+<body>
+  <main class="card" id="mainCard">
+    <!-- Start -->
+    <section id="askScreen">
+      <div class="img-wrap">
+        <!-- ur img: src="images/your.jpg" -->
+        <img id="mainGif" src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" alt="Love" />
+      </div>
+
+      <h1 id="questionText">Will you be mine valentine? 💘</h1>
+
+      <div class="buttons">
+        <button id="yesBtn" type="button">Yes</button>
+        <button id="noBtn" type="button">No</button>
+      </div>
+
+      <div class="hint">Don't lie 😉</div>
+    </section>
+
+    <!-- sucess -->
+    <section id="yayScreen" class="hidden yay">
+      <div class="img-wrap">
+        <!-- happy img -->
+        <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGQxanBzemoxM2hiZW9pNHplYnZqeTdzcGhwN3J4MzB6ajJxbmdjaiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/WKt1UDg6BRdL1Ftd0Q/giphy.gif" alt="Yay" />
+      </div>
+
+      <h1>Yassss 💖</h1>
+      <p>Love you baby! 🥰</p>
+    </section>
+  </main>
+
+  <script>
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn  = document.getElementById("noBtn");
+
+    const askScreen = document.getElementById("askScreen");
+    const yayScreen = document.getElementById("yayScreen");
+
+    // starting
+    let yesScale = 1;
+    let noScale  = 1;
+
+    // Settings
+    const YES_GROW = 1.12;  
+    const NO_SHRINK = 0.88; 
+    const NO_MIN = 0.08;    
+    const YES_MAX = 6;      
+
+    function applyScales() {
+      yesBtn.style.transform = `scale(${yesScale})`;
+      noBtn.style.transform  = `scale(${noScale})`;
+    }
+
+    const questionText = document.getElementById("questionText");
+const mainGif = document.getElementById("mainGif");
+
+const messages = [
+  "Will you be my Valentine? 💘",
+  "Are you sure? 🥺",
+  "Really really sure? 💔",
+  "I will be sad 😭",
+  "What if I ask nicely? 🌹",
+  "Pleaseee 🥹",
+  "Last chance 😖",
+  "Okay… I still love you 💞",
+];
+
+const gifs = [
+  "https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif",
+  "https://media.giphy.com/media/ROF8OQvDmxytW/giphy.gif",
+  "https://media.giphy.com/media/d2lcHJTG5Tscg/giphy.gif",
+  "https://media.giphy.com/media/OPU6wzx8JrHna/giphy.gif",
+  "https://media.giphy.com/media/26ufcYAkp8e66vanu/giphy.gif",
+  "https://media.giphy.com/media/l2QDM9Jnim1YVILXa/giphy.gif",
+  "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdTBycm1pcDR4bGtpNXA2dDZlNmhuaDZxd2Ixc3J5MWc4c3I4bTE0ayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/AoNkMC3v6MzBM360jB/giphy.gif",
+  "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdTBycm1pcDR4bGtpNXA2dDZlNmhuaDZxd2Ixc3J5MWc4c3I4bTE0ayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/AoNkMC3v6MzBM360jB/giphy.gif",
+
+];
+
+let noClicks = 0;
+
+noBtn.addEventListener("click", () => {
+  yesScale = Math.min(YES_MAX, yesScale * YES_GROW);
+  noScale  = Math.max(NO_MIN,  noScale  * NO_SHRINK);
+  applyScales();
+
+  noClicks++;
+  const i = Math.min(noClicks, messages.length - 1);
+
+  questionText.textContent = messages[i];
+  mainGif.src = gifs[i];
+
+  if (noScale <= 0.14) {
+    noBtn.style.filter = "opacity(0.35)";
+  }
+});
+
+
+    yesBtn.addEventListener("click", () => {
+      askScreen.classList.add("hidden");
+      yayScreen.classList.remove("hidden");
+    });
+
+    applyScales();
+  </script>
+</body>
+</html>
